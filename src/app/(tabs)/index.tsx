@@ -7,7 +7,11 @@ export default function TabOneScreen() {
       <FlatList 
         data={products}
         renderItem={({ item }) => <ProductListItem product={item}/>}
+        numColumns={2}
+        contentContainerStyle={{gap:5, padding: 5}}
+        columnWrapperStyle={{gap:5}}
       />
   );
+  
 }
 
