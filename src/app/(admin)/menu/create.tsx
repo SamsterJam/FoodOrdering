@@ -2,7 +2,7 @@ import Button from '@/src/components/Button';
 import { defaultPizzaImage } from '@/src/components/ProductListItem';
 import Colors from '@/src/constants/Colors';
 import { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, useLocalSearchParams } from 'expo-router';
 
@@ -60,6 +60,24 @@ export default function CreateProductScreen() {
         resetFeilds();
     };
 
+    const onDelete = () => {
+        console.warn("Deleting Product: ", name);
+        resetFeilds();
+    }
+
+    const confirmDelete = () => {
+        Alert.alert("Confirm", "Are you sure you want to delete this product?", [
+            {
+                text: 'Cancel',
+            },
+            {
+                text: 'Delete',
+                style: 'destructive',
+                onPress: onDelete,
+            }
+        ])
+    }
+
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -78,7 +96,7 @@ export default function CreateProductScreen() {
 
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{title: isUpdating? "Edit Producta" : "Create Product"}}/>
+            <Stack.Screen options={{title: isUpdating? "Edit Product" : "Create Product"}}/>
             <Image source={{uri : image || defaultPizzaImage}} style={styles.image}/>
             <Text onPress={pickImage} style={styles.textButton}>Select Image</Text>
 
@@ -90,6 +108,7 @@ export default function CreateProductScreen() {
 
             <Text style={{color: 'red'}}>{errors}</Text>
             <Button onPress={onSubmit} text={ isUpdating? "Update" : "Create"}/>
+            {isUpdating && (<Text onPress={confirmDelete} style={[styles.textButton, {color: 'orangered'}]}>Delete</Text>)}
         </View>
     )
 }
