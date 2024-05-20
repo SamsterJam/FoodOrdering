@@ -3,9 +3,12 @@ import React from 'react';
 import Button from '../components/Button';
 import { Link } from 'expo-router';
 
-const index = () => {
+export default function index() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
+      <Link href={'/sign-in'} asChild>
+        <Button text="Sign in" />
+      </Link>
       <Link href={'/(user)'} asChild>
         <Button text="User" />
       </Link>
@@ -15,5 +18,3 @@ const index = () => {
     </View>
   );
 };
-
-export default index;
