@@ -4,7 +4,7 @@ import Colors from '@/src/constants/Colors';
 import { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 export default function CreateProductScreen() {
 
@@ -12,6 +12,9 @@ export default function CreateProductScreen() {
     const [price, setPrice] = useState('');
     const [errors, setErrors] = useState('');
     const [image, setImage] = useState<string | null>(null);
+
+    const {id} = useLocalSearchParams();
+    const isUpdating = !!id;
 
     const resetFeilds = () => {
         setName('');
@@ -34,6 +37,21 @@ export default function CreateProductScreen() {
         }
         return true;
     }
+
+    const onSubmit = () => {
+        if(isUpdating){
+            onUpdate();
+        } else {
+            onCreate();
+        }
+    }
+
+    const onUpdate = () => {
+        if (!validateInput()) return;
+
+        console.warn("Updating Product: ", name);
+        resetFeilds();
+    };
     
     const onCreate = () => {
         if (!validateInput()) return;
@@ -60,7 +78,7 @@ export default function CreateProductScreen() {
 
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{title: "Create Product"}}/>
+            <Stack.Screen options={{title: isUpdating? "Edit Producta" : "Create Product"}}/>
             <Image source={{uri : image || defaultPizzaImage}} style={styles.image}/>
             <Text onPress={pickImage} style={styles.textButton}>Select Image</Text>
 
@@ -71,7 +89,7 @@ export default function CreateProductScreen() {
             <TextInput value={price} onChangeText={setPrice} placeholder='$9.99' style={styles.input} keyboardType='numeric'/>
 
             <Text style={{color: 'red'}}>{errors}</Text>
-            <Button onPress={onCreate} text="Create"/>
+            <Button onPress={onSubmit} text={ isUpdating? "Update" : "Create"}/>
         </View>
     )
 }
