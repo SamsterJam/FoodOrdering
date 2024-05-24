@@ -5,7 +5,12 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useInsertProduct, useProduct, useUpdateProduct } from "@/src/api/products";
+import {
+  useDeleteProduct,
+  useInsertProduct,
+  useProduct,
+  useUpdateProduct,
+} from "@/src/api/products";
 
 export default function CreateProductScreen() {
   const [name, setName] = useState("");
@@ -15,25 +20,22 @@ export default function CreateProductScreen() {
 
   const { id: idString } = useLocalSearchParams();
 
-  if (idString === undefined) {
-    // Handle the case where idString is undefined
-    console.error("idString is undefined");
-    return null;
-  }
+  const id = idString ? parseFloat(idString as string) : null;
+  const isUpdating = id !== null;
 
-  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
-
-  const isUpdating = !!id;
-  const { data: updatingProduct } = useProduct(id);
+  const { data: updatingProduct } = isUpdating ? useProduct(id) : { data: null };
   const { mutate: insertProduct } = useInsertProduct();
   const { mutate: updateProduct } = useUpdateProduct();
+  const { mutate: deleteProduct } = useDeleteProduct();
 
   const router = useRouter();
 
   useEffect(() => {
-    setName(updatingProduct.name);
-    setPrice(updatingProduct.price.toString());
-    setImage(updatingProduct.image);
+    if (updatingProduct) {
+      setName(updatingProduct.name);
+      setPrice(updatingProduct.price.toString());
+      setImage(updatingProduct.image);
+    }
   }, [updatingProduct]);
 
   const resetFeilds = () => {
@@ -70,7 +72,7 @@ export default function CreateProductScreen() {
     if (!validateInput()) return;
 
     updateProduct(
-      { id, name, price: parseFloat(price), image },
+      { id: id!, name, price: parseFloat(price), image },
       {
         onSuccess: () => {
           resetFeilds();
@@ -95,8 +97,13 @@ export default function CreateProductScreen() {
   };
 
   const onDelete = () => {
-    console.warn("Deleting Product: ", name);
-    resetFeilds();
+    deleteProduct(id!, {
+      onSuccess: () => {
+        resetFeilds();
+
+        router.replace("/(admin)");
+      },
+    });
   };
 
   const confirmDelete = () => {
