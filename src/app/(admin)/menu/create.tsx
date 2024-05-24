@@ -1,11 +1,11 @@
 import Button from "@/src/components/Button";
 import { defaultPizzaImage } from "@/src/components/ProductListItem";
 import Colors from "@/src/constants/Colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useInsertProduct } from "@/src/api/products";
+import { useInsertProduct, useProduct, useUpdateProduct } from "@/src/api/products";
 
 export default function CreateProductScreen() {
   const [name, setName] = useState("");
@@ -13,11 +13,28 @@ export default function CreateProductScreen() {
   const [errors, setErrors] = useState("");
   const [image, setImage] = useState<string | null>(null);
 
-  const { id } = useLocalSearchParams();
-  const isUpdating = !!id;
+  const { id: idString } = useLocalSearchParams();
 
+  if (idString === undefined) {
+    // Handle the case where idString is undefined
+    console.error("idString is undefined");
+    return null;
+  }
+
+  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+
+  const isUpdating = !!id;
+  const { data: updatingProduct } = useProduct(id);
   const { mutate: insertProduct } = useInsertProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
+
   const router = useRouter();
+
+  useEffect(() => {
+    setName(updatingProduct.name);
+    setPrice(updatingProduct.price.toString());
+    setImage(updatingProduct.image);
+  }, [updatingProduct]);
 
   const resetFeilds = () => {
     setName("");
@@ -52,8 +69,15 @@ export default function CreateProductScreen() {
   const onUpdate = () => {
     if (!validateInput()) return;
 
-    console.warn("Updating Product: ", name);
-    resetFeilds();
+    updateProduct(
+      { id, name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFeilds();
+          router.back();
+        },
+      },
+    );
   };
 
   const onCreate = () => {
