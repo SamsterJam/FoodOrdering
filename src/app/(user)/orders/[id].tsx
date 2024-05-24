@@ -4,23 +4,23 @@ import orders from "@/assets/data/orders";
 import { Stack, useLocalSearchParams } from "expo-router";
 import OrderItemListItem from "@/src/components/OrderItemListItem";
 
-export default function OrderDetailsScreen(){
-    const { id } = useLocalSearchParams();
+export default function OrderDetailsScreen() {
+  const { id } = useLocalSearchParams();
 
-    const order = orders.find(order => order.id.toString() === id);
-    
-    if (!order) return <Text>Order not found!</Text>;
+  const order = orders.find((order) => order.id.toString() === id);
 
-    return(
-        <View>
-            <Stack.Screen options={{ title: `Order #${order.id}` }} />
-            <OrderListItem order={order}/>
+  if (!order) return <Text>Order not found!</Text>;
 
-            <FlatList 
-                data={order.order_items}
-                renderItem={({item}) => <OrderItemListItem item={item} />}
-                contentContainerStyle={{padding: 5, gap: 5}}
-            />
-        </View>
-    )
+  return (
+    <View>
+      <Stack.Screen options={{ title: `Order #${order.id}` }} />
+      <OrderListItem order={order} />
+
+      <FlatList
+        data={order.order_items}
+        renderItem={({ item }) => <OrderItemListItem item={item} />}
+        contentContainerStyle={{ padding: 5, gap: 5 }}
+      />
+    </View>
+  );
 }
