@@ -63,7 +63,7 @@ export type Database = {
           created_at?: string
           id?: number
           status?: string
-          total?: number
+          total: number
           user_id?: string | null
         }
         Update: {
