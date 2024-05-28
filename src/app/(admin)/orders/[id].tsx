@@ -5,10 +5,11 @@ import OrderItemListItem from '@/src/components/OrderItemListItem';
 import { OrderStatusList } from '@/src/types';
 import Colors from '@/src/constants/Colors';
 import React from 'react';
-import { useOrderDetails } from '@/src/api/orders';
+import { useOrderDetails, useUpdateOrder } from '@/src/api/orders';
 
 export default function OrderDetailsScreen() {
   const { id: idString } = useLocalSearchParams();
+  const { mutate: updateOrder } = useUpdateOrder();
 
   if (idString === undefined) {
     // Handle the case where idString is undefined
@@ -26,6 +27,10 @@ export default function OrderDetailsScreen() {
 
   if (error) return <Text>Failed to fetch</Text>;
 
+  const updateStatus = (status) => {
+    updateOrder({ id: id, updatedFeilds: { status } });
+  };
+
   return (
     <View>
       <Stack.Screen options={{ title: `Order #${order.id}` }} />
@@ -42,7 +47,7 @@ export default function OrderDetailsScreen() {
               {OrderStatusList.map((status) => (
                 <Pressable
                   key={status}
-                  onPress={() => console.warn('Update status')}
+                  onPress={() => updateStatus(status)}
                   style={{
                     borderColor: Colors.light.tint,
                     borderWidth: 1,
