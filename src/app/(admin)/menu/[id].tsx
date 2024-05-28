@@ -1,27 +1,27 @@
-import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { View, Text, Image, StyleSheet, Pressable, ActivityIndicator } from "react-native";
-import products from "@/assets/data/products";
-import { defaultPizzaImage } from "@/src/components/ProductListItem";
-import { useState } from "react";
-import Button from "@components/Button";
-import { useCart } from "@/src/providers/CartProvider";
-import { PizzaSize, Product } from "@/src/types";
-import { FontAwesome } from "@expo/vector-icons";
-import Colors from "@/src/constants/Colors";
-import { useProduct } from "@/src/api/products";
+import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { View, Text, Image, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import products from '@/assets/data/products';
+import { defaultPizzaImage } from '@/src/components/ProductListItem';
+import { useState } from 'react';
+import Button from '@components/Button';
+import { useCart } from '@/src/providers/CartProvider';
+import { PizzaSize, Product } from '@/src/types';
+import { FontAwesome } from '@expo/vector-icons';
+import Colors from '@/src/constants/Colors';
+import { useProduct } from '@/src/api/products';
 
-const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
+const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL'];
 
 export default function ProductDetailsScreen() {
   const { id: idString } = useLocalSearchParams();
 
   if (idString === undefined) {
     // Handle the case where idString is undefined
-    console.error("idString is undefined");
+    console.error('idString is undefined');
     return null;
   }
 
-  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+  const id = parseFloat(typeof idString === 'string' ? idString : idString[0]);
 
   // Ensure useProduct is properly typed
   const {
@@ -35,14 +35,14 @@ export default function ProductDetailsScreen() {
   };
 
   const router = useRouter();
-  const [selectedSize, setSelectedSize] = useState<PizzaSize>("M");
+  const [selectedSize, setSelectedSize] = useState<PizzaSize>('M');
 
   const { addItem } = useCart();
 
   const addToCart = () => {
     if (!product) return;
     addItem(product, selectedSize);
-    router.push("/cart");
+    router.push('/cart');
   };
 
   if (isLoading) {
@@ -61,7 +61,7 @@ export default function ProductDetailsScreen() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          title: "Menu",
+          title: 'Menu',
           headerRight: () => (
             <Link href={`/(admin)/menu/create?id=${id}`} asChild>
               <Pressable>
@@ -92,16 +92,16 @@ export default function ProductDetailsScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     flex: 1,
     padding: 10,
   },
   image: {
-    width: "100%",
+    width: '100%',
     aspectRatio: 1,
   },
   price: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });

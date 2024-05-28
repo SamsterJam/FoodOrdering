@@ -1,16 +1,16 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
-import { CartItem } from "../types";
-import { randomUUID } from "expo-crypto";
-import { Tables } from "../database.types";
-import { useInsertOrder } from "../api/orders";
-import { useRouter } from "expo-router";
-import { useInsertOrderItems } from "../api/order-items";
+import { PropsWithChildren, createContext, useContext, useState } from 'react';
+import { CartItem } from '../types';
+import { randomUUID } from 'expo-crypto';
+import { Tables } from '../database.types';
+import { useInsertOrder } from '../api/orders';
+import { useRouter } from 'expo-router';
+import { useInsertOrderItems } from '../api/order-items';
 
-type Product = Tables<"products">;
+type Product = Tables<'products'>;
 
 type CartType = {
   items: CartItem[];
-  addItem: (product: Product, size: CartItem["size"]) => void;
+  addItem: (product: Product, size: CartItem['size']) => void;
   updateQuantity: (itemId: string, amount: -1 | 1) => void;
   total: number;
   checkout: () => void;
@@ -30,7 +30,7 @@ export default function CartProvider({ children }: PropsWithChildren) {
   const { mutate: insertOrderItems } = useInsertOrderItems();
   const router = useRouter();
 
-  const addItem = (product: Product, size: CartItem["size"]) => {
+  const addItem = (product: Product, size: CartItem['size']) => {
     // if already in cart increment quanity
     const existingItem = items.find((item) => item.product === product && item.size == size);
     if (existingItem) {
@@ -63,7 +63,7 @@ export default function CartProvider({ children }: PropsWithChildren) {
     setItems([]);
   };
 
-  const saveOrderItems = (order: Tables<"orders">) => {
+  const saveOrderItems = (order: Tables<'orders'>) => {
     const orderItems = items.map((cartItem) => ({
       order_id: order.id,
       product_id: cartItem.product_id,

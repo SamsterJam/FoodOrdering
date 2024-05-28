@@ -1,21 +1,21 @@
-import Button from "@/src/components/Button";
-import { defaultPizzaImage } from "@/src/components/ProductListItem";
-import Colors from "@/src/constants/Colors";
-import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import Button from '@/src/components/Button';
+import { defaultPizzaImage } from '@/src/components/ProductListItem';
+import Colors from '@/src/constants/Colors';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import {
   useDeleteProduct,
   useInsertProduct,
   useProduct,
   useUpdateProduct,
-} from "@/src/api/products";
+} from '@/src/api/products';
 
 export default function CreateProductScreen() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [errors, setErrors] = useState("");
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [errors, setErrors] = useState('');
   const [image, setImage] = useState<string | null>(null);
 
   const { id: idString } = useLocalSearchParams();
@@ -39,22 +39,22 @@ export default function CreateProductScreen() {
   }, [updatingProduct]);
 
   const resetFeilds = () => {
-    setName("");
-    setPrice("");
+    setName('');
+    setPrice('');
   };
 
   const validateInput = () => {
-    setErrors("");
+    setErrors('');
     if (!name) {
-      setErrors("Name is required");
+      setErrors('Name is required');
       return false;
     }
     if (!price) {
-      setErrors("Price is required");
+      setErrors('Price is required');
       return false;
     }
     if (isNaN(parseFloat(price))) {
-      setErrors("Price is not a number");
+      setErrors('Price is not a number');
       return false;
     }
     return true;
@@ -101,19 +101,19 @@ export default function CreateProductScreen() {
       onSuccess: () => {
         resetFeilds();
 
-        router.replace("/(admin)");
+        router.replace('/(admin)');
       },
     });
   };
 
   const confirmDelete = () => {
-    Alert.alert("Confirm", "Are you sure you want to delete this product?", [
+    Alert.alert('Confirm', 'Are you sure you want to delete this product?', [
       {
-        text: "Cancel",
+        text: 'Cancel',
       },
       {
-        text: "Delete",
-        style: "destructive",
+        text: 'Delete',
+        style: 'destructive',
         onPress: onDelete,
       },
     ]);
@@ -137,7 +137,7 @@ export default function CreateProductScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: isUpdating ? "Edit Product" : "Create Product" }} />
+      <Stack.Screen options={{ title: isUpdating ? 'Edit Product' : 'Create Product' }} />
       <Image source={{ uri: image || defaultPizzaImage }} style={styles.image} />
       <Text onPress={pickImage} style={styles.textButton}>
         Select Image
@@ -155,10 +155,10 @@ export default function CreateProductScreen() {
         keyboardType="numeric"
       />
 
-      <Text style={{ color: "red" }}>{errors}</Text>
-      <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
+      <Text style={{ color: 'red' }}>{errors}</Text>
+      <Button onPress={onSubmit} text={isUpdating ? 'Update' : 'Create'} />
       {isUpdating && (
-        <Text onPress={confirmDelete} style={[styles.textButton, { color: "orangered" }]}>
+        <Text onPress={confirmDelete} style={[styles.textButton, { color: 'orangered' }]}>
           Delete
         </Text>
       )}
@@ -169,28 +169,28 @@ export default function CreateProductScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 10,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
     marginTop: 5,
     marginBottom: 20,
   },
   lable: {
-    color: "gray",
+    color: 'gray',
     fontSize: 16,
   },
   image: {
-    width: "50%",
+    width: '50%',
     aspectRatio: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   textButton: {
-    alignSelf: "center",
-    fontWeight: "bold",
+    alignSelf: 'center',
+    fontWeight: 'bold',
     color: Colors.light.tint,
     marginVertical: 10,
   },

@@ -1,14 +1,14 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import { Order } from "../types";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { Link, useSegments } from "expo-router";
-import { Tables } from "../database.types";
+import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { Order } from '../types';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { Link, useSegments } from 'expo-router';
+import { Tables } from '../database.types';
 
 dayjs.extend(relativeTime);
 
 type OrderListItemProps = {
-  order: Tables<"orders">;
+  order: Tables<'orders'>;
 };
 
 export default function OrderListItem({ order }: OrderListItemProps) {
@@ -21,7 +21,7 @@ export default function OrderListItem({ order }: OrderListItemProps) {
           <Text style={styles.ageText}>{dayjs(order.created_at).fromNow()}</Text>
         </View>
         <Text
-          style={[styles.statusText, { color: order.status === "Delivered" ? "gray" : "green" }]}
+          style={[styles.statusText, { color: order.status === 'Delivered' ? 'gray' : 'green' }]}
         >
           {order.status}
         </Text>
@@ -32,23 +32,23 @@ export default function OrderListItem({ order }: OrderListItemProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   orderText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
   },
   ageText: {
-    color: "gray",
+    color: 'gray',
     fontSize: 16,
   },
   statusText: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 18,
   },
 });

@@ -1,7 +1,7 @@
-import Colors from "@/src/constants/Colors";
-import { FontAwesome } from "@expo/vector-icons";
-import { Link, Stack } from "expo-router";
-import { Pressable } from "react-native";
+import Colors from '@/src/constants/Colors';
+import { FontAwesome } from '@expo/vector-icons';
+import { Link, Stack } from 'expo-router';
+import { Pressable } from 'react-native';
 
 export default function MenuStack() {
   return (
@@ -9,7 +9,7 @@ export default function MenuStack() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Menu",
+          title: 'Menu',
           headerRight: () => (
             <Link href="/(admin)/menu/create" asChild>
               <Pressable>

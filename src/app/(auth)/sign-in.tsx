@@ -1,14 +1,14 @@
-import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
-import { useState } from "react";
-import Button from "@/src/components/Button";
-import Colors from "@/src/constants/Colors";
-import { Link, Stack } from "expo-router";
-import { supabase } from "@/src/lib/supabase";
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { useState } from 'react';
+import Button from '@/src/components/Button';
+import Colors from '@/src/constants/Colors';
+import { Link, Stack } from 'expo-router';
+import { supabase } from '@/src/lib/supabase';
 
 export default function SignInScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function signInWithEmail() {
@@ -20,7 +20,7 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Sign in" }} />
+      <Stack.Screen options={{ title: 'Sign in' }} />
       <Text style={styles.lable}>Name</Text>
       <TextInput
         autoComplete="email"
@@ -41,9 +41,9 @@ export default function SignInScreen() {
         style={styles.input}
       />
 
-      <Text style={{ color: "red" }}>{errors}</Text>
-      <Button onPress={signInWithEmail} text={loading ? "Signing in..." : "Sign in"} />
-      <Link href={"/sign-up"} asChild>
+      <Text style={{ color: 'red' }}>{errors}</Text>
+      <Button onPress={signInWithEmail} text={loading ? 'Signing in...' : 'Sign in'} />
+      <Link href={'/sign-up'} asChild>
         <Text style={styles.textButton}>Create an account</Text>
       </Link>
     </View>
@@ -53,31 +53,31 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 10,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
     marginTop: 5,
     marginBottom: 20,
-    borderColor: "lightgray",
+    borderColor: 'lightgray',
     borderWidth: 2,
     paddingVertical: 5,
   },
   lable: {
-    color: "gray",
+    color: 'gray',
     fontSize: 16,
   },
   image: {
-    width: "50%",
+    width: '50%',
     aspectRatio: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   textButton: {
-    alignSelf: "center",
-    fontWeight: "bold",
+    alignSelf: 'center',
+    fontWeight: 'bold',
     color: Colors.light.tint,
     marginVertical: 10,
   },

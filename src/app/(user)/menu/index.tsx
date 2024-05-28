@@ -1,8 +1,8 @@
-import { View, FlatList, ActivityIndicator, Text } from "react-native";
-import ProductListItem from "@components/ProductListItem";
-import { supabase } from "@/src/lib/supabase";
-import { useQuery } from "@tanstack/react-query";
-import { useProductList } from "@/src/api/products";
+import { View, FlatList, ActivityIndicator, Text } from 'react-native';
+import ProductListItem from '@components/ProductListItem';
+import { supabase } from '@/src/lib/supabase';
+import { useQuery } from '@tanstack/react-query';
+import { useProductList } from '@/src/api/products';
 
 export default function TabOneScreen() {
   const { data: products, error, isLoading } = useProductList();

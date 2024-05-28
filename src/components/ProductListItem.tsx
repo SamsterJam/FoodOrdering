@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import Colors from "@/src/constants/Colors";
-import { Link, useSegments } from "expo-router";
-import { Tables } from "../database.types";
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import Colors from '@/src/constants/Colors';
+import { Link, useSegments } from 'expo-router';
+import { Tables } from '../database.types';
 
 export const defaultPizzaImage =
-  "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
+  'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';
 
 type ProductListItemProps = {
-  product: Tables<"products">;
+  product: Tables<'products'>;
 };
 
 export default function ProductListItem({ product }: ProductListItemProps) {
@@ -30,23 +30,23 @@ export default function ProductListItem({ product }: ProductListItemProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 20,
     flex: 1,
-    maxWidth: "50%",
+    maxWidth: '50%',
   },
   title: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     marginVertical: 10,
   },
   price: {
     color: Colors.light.tint,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   image: {
-    width: "100%",
+    width: '100%',
     aspectRatio: 1,
   },
 });

@@ -1,6 +1,6 @@
-import { View, FlatList, ActivityIndicator, Text } from "react-native";
-import ProductListItem from "@components/ProductListItem";
-import { useProductList } from "@/src/api/products";
+import { View, FlatList, ActivityIndicator, Text } from 'react-native';
+import ProductListItem from '@components/ProductListItem';
+import { useProductList } from '@/src/api/products';
 
 export default function TabOneScreen() {
   const { data: products, error, isLoading } = useProductList();
