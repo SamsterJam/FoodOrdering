@@ -2,7 +2,7 @@ import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native
 import OrderListItem from '@/src/components/OrderListItem';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import OrderItemListItem from '@/src/components/OrderItemListItem';
-import { OrderStatusList } from '@/src/types';
+import { OrderStatus, OrderStatusList } from '@/src/types';
 import Colors from '@/src/constants/Colors';
 import React from 'react';
 import { useOrderDetails, useUpdateOrder } from '@/src/api/orders';
@@ -21,13 +21,13 @@ export default function OrderDetailsScreen() {
 
   const { data: order, isLoading, error } = useOrderDetails(id);
 
-  if (!order) return <Text>Order not found!</Text>;
-
   if (isLoading) return <ActivityIndicator />;
 
   if (error) return <Text>Failed to fetch</Text>;
 
-  const updateStatus = (status) => {
+  if (!order) return <Text>Order not found!</Text>;
+
+  const updateStatus = (status: OrderStatus) => {
     updateOrder({ id: id, updatedFeilds: { status } });
   };
 
