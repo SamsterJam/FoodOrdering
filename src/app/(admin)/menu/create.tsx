@@ -72,11 +72,13 @@ export default function CreateProductScreen() {
     }
   };
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     if (!validateInput()) return;
 
+    const imagePath = await uploadImage();
+
     updateProduct(
-      { id: id!, name, price: parseFloat(price), image },
+      { id: id!, name, price: parseFloat(price), imagePath },
       {
         onSuccess: () => {
           resetFeilds();

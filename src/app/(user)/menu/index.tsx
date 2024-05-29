@@ -22,14 +22,6 @@ export default function TabOneScreen() {
       numColumns={2}
       contentContainerStyle={{ gap: 5, padding: 5 }}
       columnWrapperStyle={{ gap: 5 }}
-      ListFooterComponent={
-        <Button
-          text="Sign Out"
-          onPress={() => {
-            supabase.auth.signOut();
-          }}
-        />
-      }
     />
   );
 }
