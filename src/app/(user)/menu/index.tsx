@@ -1,8 +1,8 @@
 import { View, FlatList, ActivityIndicator, Text } from 'react-native';
 import ProductListItem from '@components/ProductListItem';
 import { supabase } from '@/src/lib/supabase';
-import { useQuery } from '@tanstack/react-query';
 import { useProductList } from '@/src/api/products';
+import Button from '@/src/components/Button';
 
 export default function TabOneScreen() {
   const { data: products, error, isLoading } = useProductList();
@@ -22,6 +22,14 @@ export default function TabOneScreen() {
       numColumns={2}
       contentContainerStyle={{ gap: 5, padding: 5 }}
       columnWrapperStyle={{ gap: 5 }}
+      ListFooterComponent={
+        <Button
+          text="Sign Out"
+          onPress={() => {
+            supabase.auth.signOut();
+          }}
+        />
+      }
     />
   );
 }
