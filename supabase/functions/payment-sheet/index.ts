@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
     const { amount } = await req.json();
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: 1099,
+      amount: amount,
       currency: 'usd',
     });
 
