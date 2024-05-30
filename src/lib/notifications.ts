@@ -3,6 +3,8 @@ import { Text, View, Button, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import { supabase } from './supabase';
+import { Tables } from '../database.types';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -13,12 +15,16 @@ Notifications.setNotificationHandler({
 });
 
 // Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
-export async function sendPushNotification(expoPushToken: Notifications.ExpoPushToken) {
+export async function sendPushNotification(
+  expoPushToken: Notifications.ExpoPushToken,
+  title: string,
+  body: string,
+) {
   const message = {
     to: expoPushToken,
     sound: 'default',
-    title: 'Original Title',
-    body: 'And here is the body!',
+    title,
+    body,
     data: { someData: 'goes here' },
   };
 
@@ -68,3 +74,15 @@ export async function registerForPushNotificationsAsync() {
 
   return token;
 }
+
+const getUserToken = async (userId) => {
+  const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
+  return data?.expo_push_token;
+};
+
+export const notifyUserAboutUpdate = async (order: Tables<'orders'>) => {
+  const token = await getUserToken(order.user_id);
+  const title = `Your order is now ${order.status}`;
+  const body = `Click to see status`;
+  sendPushNotification(token, title, body);
+};

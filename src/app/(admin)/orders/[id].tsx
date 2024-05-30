@@ -6,6 +6,7 @@ import { OrderStatus, OrderStatusList } from '@/src/types';
 import Colors from '@/src/constants/Colors';
 import React from 'react';
 import { useOrderDetails, useUpdateOrder } from '@/src/api/orders';
+import { notifyUserAboutUpdate } from '@/src/lib/notifications';
 
 export default function OrderDetailsScreen() {
   const { id: idString } = useLocalSearchParams();
@@ -29,6 +30,10 @@ export default function OrderDetailsScreen() {
 
   const updateStatus = (status: OrderStatus) => {
     updateOrder({ id: id, updatedFeilds: { status } });
+
+    if (order) {
+      notifyUserAboutUpdate({ ...order, status });
+    }
   };
 
   return (
