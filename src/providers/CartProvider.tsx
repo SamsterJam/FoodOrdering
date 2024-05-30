@@ -5,6 +5,7 @@ import { Tables } from '../database.types';
 import { useInsertOrder } from '../api/orders';
 import { useRouter } from 'expo-router';
 import { useInsertOrderItems } from '../api/order-items';
+import { initializePaymentSheet, openPaymentSheet } from '../lib/stripe';
 
 type Product = Tables<'products'>;
 
@@ -57,7 +58,9 @@ export default function CartProvider({ children }: PropsWithChildren) {
     );
   };
 
-  const total = items.reduce((sum, item) => (sum += item.product.price * item.quantity), 0);
+  const total =
+    Math.floor(items.reduce((sum, item) => (sum += item.product.price * item.quantity), 0) * 100) /
+    100.0;
 
   const clearCart = () => {
     setItems([]);
@@ -79,13 +82,18 @@ export default function CartProvider({ children }: PropsWithChildren) {
     });
   };
 
-  const checkout = () => {
-    insertOrder(
-      { total },
-      {
-        onSuccess: saveOrderItems,
-      },
-    );
+  const checkout = async () => {
+    await initializePaymentSheet(total * 100);
+    const paid = await openPaymentSheet();
+
+    if (paid) {
+      insertOrder(
+        { total: total },
+        {
+          onSuccess: saveOrderItems,
+        },
+      );
+    }
   };
 
   return (
